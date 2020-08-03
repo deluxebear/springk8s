@@ -1,0 +1,19 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: springk8s
+  namespace: default
+data:
+  application.properties: |-
+    server.port=8080
+    #启用动态加载 configMap 里面的配置文件
+    spring.cloud.kubernetes.reload.enabled=true
+    #默认只会重载 @ConfigurationProperties 或 @RefreshScope 注解的 bean spring.cloud.kubernetes.reload.strategy=refresh 这是默认值
+    #spring.cloud.kubernetes.reload.strategy=shutdown 这样会重启容器
+    #spring.cloud.kubernetes.reload.strategy=restart_context 这样整个Spring ApplicationContext会正常重启，使用新配置重新创建Bean
+
+    #启用 liveness 和 readiness
+    management.health.defaults.enabled=true
+    management.endpoint.health.probes.enabled=true
+    management.health.livenessstate.enabled=true
+    management.health.readinessstate.enabled=true
